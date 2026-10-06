@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masala Memory — Forensic Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-outer: #521820;
+            --bg-canvas: #E9DFCE;
+            --card-main: #F3EBE0;
+            --card-accent: #4A121A;
+            --card-subtle: #D8C8B8;
+            --text-dark: #2B0C10;
+            --text-muted: #6E534C;
+            --text-light: #F8F4EE;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: var(--bg-canvas); color: var(--text-dark); font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; }
+
+        .top-navbar {
+            background: var(--bg-outer);
+            color: var(--text-light);
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand { font-family: 'Instrument Serif', serif; font-size: 26px; font-style: italic; }
+
+        .main-container { max-width: 860px; margin: 60px auto; padding: 0 24px; }
+
+        header { margin-bottom: 40px; text-align: center; }
+        .tag { background: var(--card-subtle); padding: 6px 16px; border-radius: 30px; font-size: 12px; font-weight: 600; }
+        h1 { font-family: 'Instrument Serif', serif; font-size: 58px; font-weight: 400; margin: 16px 0 12px 0; line-height: 1; }
+        p.desc { color: var(--text-muted); font-size: 16px; }
+
+        .upload-card {
+            background: var(--card-main);
+            border-radius: 28px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(74, 18, 26, 0.08);
+            border: 1px solid rgba(110, 83, 76, 0.15);
+        }
+
+        .dropzone {
+            background: var(--card-subtle);
+            border: 2px dashed rgba(74, 18, 26, 0.3);
+            border-radius: 20px;
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .dropzone:hover { background: #CFBCA9; }
+
+        .dropzone-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+        .dropzone-sub { font-size: 13px; color: var(--text-muted); }
+        .file-input { position: absolute; top:0; left:0; width:100%; height:100%; opacity:0; cursor:pointer; }
+        .file-name { margin-top: 12px; font-weight: 700; color: var(--card-accent); }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 24px;
+            background: var(--card-accent);
+            color: var(--text-light);
+            border: none;
+            padding: 18px;
+            border-radius: 40px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(74, 18, 26, 0.25);
+            transition: all 0.2s ease;
+        }
+
+        .submit-btn:hover { background: #330A10; transform: translateY(-1px); }
+    </style>
+</head>
+<body>
+
+    <nav class="top-navbar">
+        <span class="nav-brand">Masala Memory </span>
+        <span style="font-size: 12px; opacity: 0.85;">Volatile Memory Studio</span>
+    </nav>
+
+    <div class="main-container">
+        <header>
+            <span class="tag">Digital Forensics Platform</span>
+            <h1> RAM Memory Triage</h1>
+            <p class="desc">Upload raw RAM dumps (.raw, .vmem, .dd) to automatically generate an interactive forensic dashboard.</p>
+        </header>
+
+        <div class="upload-card">
+            <form action="/analyze" method="post" enctype="multipart/form-data">
+                <div class="dropzone">
+                    <div class="dropzone-title">Drop RAM Memory Dump Here</div>
+                    <div class="dropzone-sub">Supports raw Windows & Linux physical RAM images</div>
+                    <div class="file-name" id="file-label"></div>
+                    <input type="file" name="file" class="file-input" required onchange="showFile(this)">
+                </div>
+
+                <button type="submit" class="submit-btn" id="btn">Analyze & Open Dashboard ➔</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showFile(input) {
+            if (input.files && input.files[0]) {
+                document.getElementById('file-label').textContent = 'Selected: ' + input.files[0].name;
+            }
+        }
+        document.querySelector('form').addEventListener('submit', () => {
+            const btn = document.getElementById('btn');
+            btn.textContent = 'Orchestrating Volatility Engine... ';
+            btn.style.opacity = '0.8';
+        });
+    </script>
+</body>
+</html>
